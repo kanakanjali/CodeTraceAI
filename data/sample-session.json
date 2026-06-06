@@ -1,0 +1,57 @@
+{
+  "sessionId": "cursor-auth-refactor.trace",
+  "project": "CodeTrace AI sample repository",
+  "riskScore": 82,
+  "checkpoint": "safe-auth-before-ai-pass",
+  "events": [
+    {
+      "time": "00:04",
+      "type": "file",
+      "title": "Auth middleware rewritten",
+      "path": "src/middleware/auth.ts",
+      "risk": 76
+    },
+    {
+      "time": "00:11",
+      "type": "terminal",
+      "title": "Environment variable printed",
+      "rule": "terminal.secret_echo",
+      "risk": 91
+    },
+    {
+      "time": "00:18",
+      "type": "package",
+      "title": "Dependency added",
+      "path": "package.json",
+      "risk": 58
+    },
+    {
+      "time": "00:26",
+      "type": "file",
+      "title": "Test file deleted",
+      "path": "tests/auth-refresh.test.ts",
+      "risk": 84
+    },
+    {
+      "time": "00:33",
+      "type": "security",
+      "title": "Config file touched",
+      "path": "env.fixture",
+      "risk": 88
+    },
+    {
+      "time": "00:41",
+      "type": "terminal",
+      "title": "Migration generated",
+      "path": "db/migrations/20260601_auth.sql",
+      "risk": 63
+    },
+    {
+      "time": "00:48",
+      "type": "security",
+      "title": "Rollback report prepared",
+      "path": "reports/cursor-auth-refactor.md",
+      "risk": 42
+    }
+  ]
+}

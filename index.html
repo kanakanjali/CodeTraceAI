@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeTrace AI | Flight Recorder for AI-Assisted Development</title>
+    <meta
+      name="description"
+      content="CodeTrace AI is a flight recorder for AI-assisted coding sessions. It tracks file changes, commands, packages, risks, and rollback checkpoints."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#cockpit" aria-label="CodeTrace AI home">
+        <span class="brand-mark">CT</span>
+        <span>
+          <strong>CodeTrace AI</strong>
+          <small>Agent Flight Recorder</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#cockpit">Cockpit</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#capabilities">Capabilities</a>
+      </nav>
+
+      <a class="topbar-action" href="#pipeline">Architecture</a>
+    </header>
+
+    <main>
+      <section id="cockpit" class="cockpit-section">
+        <div class="cockpit-copy">
+          <p class="eyebrow">Local observability for AI coding tools</p>
+          <h1>CodeTrace<br />AI</h1>
+          <p class="intro">
+            Flight recorder for AI-assisted development. Scan code sessions,
+            surface risky agent behavior, and prepare rollback-ready reports
+            before changes reach Git.
+          </p>
+          <div class="signal-strip" aria-label="Quick timeline filters">
+            <button class="signal-filter" type="button" data-filter="security">Secrets</button>
+            <button class="signal-filter" type="button" data-filter="terminal">Shell</button>
+            <button class="signal-filter" type="button" data-filter="file">Auth</button>
+            <button class="signal-filter" type="button" data-filter="package">Deps</button>
+          </div>
+          <div class="hero-actions" aria-label="Primary actions">
+            <button class="primary-action" id="scanBtn" type="button">
+              Scan sample repo
+            </button>
+            <button class="secondary-action" id="simulateBtn" type="button">
+              Replay session
+            </button>
+            <button class="secondary-action" id="exportBtn" type="button">
+              Export report
+            </button>
+          </div>
+        </div>
+
+        <section class="app-shell" aria-label="CodeTrace AI dashboard preview">
+          <div class="app-header">
+            <div>
+              <p class="panel-kicker">Session</p>
+              <h2 id="sessionName">cursor-auth-refactor.trace</h2>
+            </div>
+            <div class="session-controls">
+              <button class="compact-action" id="headerScanBtn" type="button">
+                Scan
+              </button>
+              <div class="session-state">
+                <span class="status-dot"></span>
+                <span id="apiMode">demo mode</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="metrics-grid" aria-label="Session metrics">
+            <article class="metric risk">
+              <span>Risk</span>
+              <strong id="riskScore">82</strong>
+            </article>
+            <article class="metric">
+              <span>Files</span>
+              <strong id="filesMetric">14</strong>
+            </article>
+            <article class="metric">
+              <span>Commands</span>
+              <strong id="commandsMetric">6</strong>
+            </article>
+            <article class="metric">
+              <span>Blocked</span>
+              <strong id="blockedMetric">2</strong>
+            </article>
+          </div>
+
+          <div class="workspace-grid">
+            <aside class="timeline-panel" aria-label="Recorded timeline">
+              <div class="panel-title-row">
+                <div>
+                  <p class="panel-kicker">Recorder timeline</p>
+                  <h3>Agent actions</h3>
+                </div>
+                <span class="count-pill" id="eventCount">7 events</span>
+              </div>
+
+              <div class="filter-row" role="group" aria-label="Timeline filter">
+                <button class="filter-btn active" type="button" data-filter="all">All</button>
+                <button class="filter-btn" type="button" data-filter="file">Files</button>
+                <button class="filter-btn" type="button" data-filter="security">Risk</button>
+                <button class="filter-btn" type="button" data-filter="terminal">Shell</button>
+              </div>
+
+              <div class="timeline-list" id="timelineList"></div>
+            </aside>
+
+            <section class="trace-panel" aria-label="Trace graph and command replay">
+              <div class="trace-top">
+                <div>
+                  <p class="panel-kicker">Dependency trace</p>
+                  <h3 id="selectedTitle">Risk path</h3>
+                </div>
+                <button class="icon-action" id="pauseCanvasBtn" type="button" aria-label="Pause trace animation" title="Pause trace animation">
+                  ||
+                </button>
+              </div>
+
+              <canvas id="traceCanvas" width="780" height="360" aria-label="Animated session trace graph"></canvas>
+
+              <div class="detail-grid">
+                <article class="detail-panel">
+                  <p class="panel-kicker">Terminal</p>
+                  <pre id="commandOutput"></pre>
+                </article>
+                <article class="detail-panel">
+                  <p class="panel-kicker">Diff summary</p>
+                  <pre id="diffOutput"></pre>
+                </article>
+              </div>
+            </section>
+
+            <aside class="risk-panel" aria-label="Risk report">
+              <div class="panel-title-row">
+                <div>
+                  <p class="panel-kicker">Guard report</p>
+                  <h3 id="riskTitle">High attention</h3>
+                </div>
+                <span class="risk-badge" id="riskBadge">P1</span>
+              </div>
+
+              <div class="risk-meter" aria-label="Risk meter">
+                <span id="riskMeterFill"></span>
+              </div>
+
+              <div class="score-explanation">
+                <p id="scoreExplanation">
+                  Score: 82 - secret exposure, auth-sensitive file, dependency signal.
+                </p>
+                <div class="risk-factor-list" id="riskFactorList"></div>
+              </div>
+
+              <div class="risk-body">
+                <p id="riskText">
+                  The agent touched auth middleware, changed token handling, and
+                  attempted to print an environment variable in terminal output.
+                </p>
+              </div>
+
+              <div class="checkpoint-box">
+                <p class="panel-kicker">Rollback checkpoint</p>
+                <strong id="checkpointName">safe-auth-before-ai-pass</strong>
+                <button class="rollback-btn" id="rollbackBtn" type="button">
+                  Prepare rollback
+                </button>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </section>
+
+      <section id="pipeline" class="pipeline-section">
+        <div class="section-heading">
+          <p class="eyebrow">Project architecture</p>
+          <h2>Built like a real developer tool, not a generic dashboard.</h2>
+        </div>
+
+        <div class="pipeline-grid">
+          <article>
+            <span class="step-index">01</span>
+            <h3>Recorder hooks</h3>
+            <p>
+              Git hooks, file watchers, and shell wrappers capture edits,
+              commands, package installs, and checkpoints during an AI coding
+              session.
+            </p>
+          </article>
+          <article>
+            <span class="step-index">02</span>
+            <h3>Risk engine</h3>
+            <p>
+              Rules score secrets exposure, risky command patterns, unsafe
+              dependency drift, auth changes, and sensitive file access.
+            </p>
+          </article>
+          <article>
+            <span class="step-index">03</span>
+            <h3>Trace graph</h3>
+            <p>
+              Events are linked into a timeline so reviewers can replay what the
+              AI changed and understand which files may need tests.
+            </p>
+          </article>
+          <article>
+            <span class="step-index">04</span>
+            <h3>Rollback report</h3>
+            <p>
+              The final report includes a session score, risky diffs, command
+              log, safe checkpoint, and suggested verification steps.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="roadmap" class="roadmap-section">
+        <div class="section-heading">
+          <p class="eyebrow">Build plan</p>
+          <h2>MVP scope for a production-ready local recorder.</h2>
+        </div>
+
+        <div class="roadmap-board">
+          <article>
+            <h3>Week 1</h3>
+            <ul>
+              <li>CLI recorder for file changes and command logs</li>
+              <li>SQLite session store</li>
+              <li>Git checkpoint creation</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Week 2</h3>
+            <ul>
+              <li>Secret detection and risky command rules</li>
+              <li>Dependency diff scanner</li>
+              <li>Session risk score</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Week 3</h3>
+            <ul>
+              <li>React dashboard timeline</li>
+              <li>Trace graph and report export</li>
+              <li>Rollback preparation workflow</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Stretch</h3>
+            <ul>
+              <li>VS Code extension</li>
+              <li>Tree-sitter AST diffing</li>
+              <li>LLM-generated review summary</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="capabilities" class="capabilities-section">
+        <div class="section-heading">
+          <p class="eyebrow">Capabilities</p>
+          <h2>What the current MVP demonstrates.</h2>
+        </div>
+
+        <div class="capabilities-layout">
+          <article class="capability-card">
+            <h3>Recorder workflow</h3>
+            <p>Captures session events from file scans, command logs, dependencies, and rollback checkpoints.</p>
+          </article>
+          <article class="capability-card wide">
+            <h3>Risk analysis</h3>
+            <p>
+              Scores sensitive files, secret-like values, auth-sensitive code
+              paths, risky terminal commands, dependency drift, and database
+              migration changes.
+            </p>
+          </article>
+          <article class="capability-card">
+            <h3>Reporting surface</h3>
+            <p>Shows a dashboard timeline, trace graph, event details, report export, and saved scan sessions.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>CodeTrace AI</span>
+      <span>Full-stack local recorder for AI-assisted development.</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

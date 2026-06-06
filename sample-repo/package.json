@@ -1,0 +1,12 @@
+{
+  "name": "sample-ai-auth-app",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "jsonwebtoken": "latest",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.1.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "codetrace-ai",
+  "version": "1.0.0",
+  "description": "Full-stack MVP for an AI-assisted development flight recorder.",
+  "main": "server.js",
+  "scripts": {
+    "start": "tsx server.js",
+    "scan": "tsx cli.js scan sample-repo",
+    "build": "tsc",
+    "test": "tsx --test tests/",
+    "check": "node --check server.js && node --check cli.js && node --check backend/scanner.js && node --check backend/storage.js"
+  },
+  "keywords": [
+    "developer-tools",
+    "security",
+    "ai-coding",
+    "git",
+    "static-analysis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.9.1",
+    "better-sqlite3": "^12.10.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
