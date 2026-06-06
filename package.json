@@ -7,7 +7,7 @@
     "start": "tsx server.js",
     "scan": "tsx cli.js scan sample-repo",
     "build": "tsc",
-    "test": "tsx --test tests/",
+    "test": "tsx --test tests/scanner.test.js tests/storage.test.js",
     "check": "node --check server.js && node --check cli.js && node --check backend/scanner.js && node --check backend/storage.js"
   },
   "keywords": [
