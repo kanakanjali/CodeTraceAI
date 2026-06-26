@@ -1,8 +1,10 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import Database from "better-sqlite3";
+import { fileURLToPath } from "node:url";
 
-const DATA_DIR = path.join(__dirname, "..", "data");
+const _dirname = typeof __dirname !== "undefined" ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = path.join(_dirname, "..", "data");
 const DB_FILE = path.join(DATA_DIR, "codetrace.sqlite");
 const LEGACY_SESSIONS_FILE = path.join(DATA_DIR, "sessions.json");
 
