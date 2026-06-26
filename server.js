@@ -9,6 +9,13 @@ const { getLatestSnapshots, getSession, listSessions, saveSession } = require(".
 const PORT = Number(process.env.PORT || 4173);
 const ROOT_DIR = __dirname;
 const SAMPLE_REPO = path.join(ROOT_DIR, "sample-repo");
+
+// Ensure data directory exists on deployment
+const DATA_DIR = path.join(ROOT_DIR, "data");
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
